@@ -56,6 +56,11 @@ public class BlockRefParam implements Serializable {
         this.identifier = identifier;
     }
 
+    @Override
+    public String toString() {
+        return "BlockRefParam{" + "identifier=" + identifier + ", inputs=" + inputs + '}';
+    }
+    
     public BlockRefParam(Map<String, String> inputs) {
         if(inputs.keySet().stream().noneMatch(BLOCK_INPUT_KEYS_TO_VALIDATE::contains)) {
             throw RskJsonRpcRequestException.invalidParamError("Invalid block input");

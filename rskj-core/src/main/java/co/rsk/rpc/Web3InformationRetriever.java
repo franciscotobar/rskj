@@ -76,10 +76,12 @@ public class Web3InformationRetriever {
             block = blockchain.getBestBlock();
         } else if (EARLIEST.equals(identifier)) {
             block = blockchain.getBlockByNumber(0);
-        } else {
+        } else if(identifier.length() == 66) {
+            block = this.blockchain.getBlockByHash(getBlockHash(identifier));
+        } else{
             block = this.blockchain.getBlockByNumber(getBlockNumber(identifier));
         }
-
+        
         return Optional.ofNullable(block);
     }
 
@@ -134,4 +136,16 @@ public class Web3InformationRetriever {
         }
         return blockNumber;
     }
+    
+    private byte[] getBlockHash(String identifier) {
+        byte[] blockNumber;
+        try {
+            blockNumber = HexUtils.stringHexToByteArray(identifier);
+        } catch (NumberFormatException | StringIndexOutOfBoundsException e) {
+            throw invalidParamError(String.format("invalid blockhash %s", identifier));
+        }
+        return blockNumber;
+    } 
+            
+            
 }
